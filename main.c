@@ -11,6 +11,7 @@
 struct attributes {
 	int sample_freq;
 	int taps;
+	int N;
 };
 
 
@@ -54,11 +55,12 @@ double* low_pass(struct attributes* instance, double* h){
 	scanf("%d", &(cutoff)); 
 
 	for (int i = 1; i < instance->taps+1; i++){
-		h[i-1] = sin(PI*(i)*cutoff)/(PI*(i)*cutoff);
+		h[i-1] = sin(PI*(i/instance->sample_freq)*cutoff)/(PI*(i/instance->sample_freq)*cutoff);
 		sum += h[i-1];
+		printf("%d   %1.20f \n",i, h[i]);
 	}
 
-	printf("%1.20f \n", sum);
+	printf("\n %1.20f \n\n", sum);
 
 	for (int i = 0; i < instance->taps; i++){
 		h[i] = h[i]/sum;
