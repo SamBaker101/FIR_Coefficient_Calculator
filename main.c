@@ -57,7 +57,7 @@ double* low_pass(struct attributes* instance, double* h){
 		temp = sin((PI*i*cutoff)/instance->sample_freq)/((PI*i*cutoff)/instance->sample_freq);
 		sum += 2*temp;
 		h[instance->taps/2+(i-1)] = temp;
-		h[instance->taps/2-(i-1)] = temp;
+		h[instance->taps/2-(i)] = temp;
 		printf("%d   %1.20f \n",i, h[instance->taps/2+(i-1)]);
 	}
 
