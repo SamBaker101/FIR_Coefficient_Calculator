@@ -144,7 +144,7 @@ void plot_impulse(struct attributes* instance, double* h){
 		exit(EXIT_FAILURE);
 	}
 
-	fprintf(gnuplot, "plot \"%s\" t 'Price' w lp\n", filename);
+	fprintf(gnuplot, "plot \"%s\" t 'placeholder' w lp\n", filename);
 	fflush(gnuplot);
 	fprintf(stdout, "Click Ctrl+d to quit...\n");
 	getchar();
