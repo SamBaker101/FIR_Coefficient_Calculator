@@ -18,6 +18,9 @@ struct attributes {
 void get_attributes(struct attributes*);
 double* low_pass(struct attributes*, double*);
 
+double* normalize(struct attributes*, double*);
+void print_coeffs(struct attributes*, double*);
+
 
 int main() {
 	struct attributes instance;
@@ -30,6 +33,9 @@ int main() {
 
 	double* impulse_resp = (double*)malloc((instance.taps+1)*sizeof(double));
 	impulse_resp = low_pass(&instance, impulse_resp);
+	impulse_resp = normalize(&instance, impulse_resp);
+	print_coeffs(&instance, impulse_resp);
+	
 }
 
 
@@ -47,7 +53,6 @@ void get_attributes(struct attributes* instance){
 double* low_pass(struct attributes* instance, double* h){
 	int cutoff;
 	double temp;
-	double sum = 0;
 
 	printf("Please Enter Cutoff Freq \n");
 	fflush(stdout);
@@ -55,22 +60,35 @@ double* low_pass(struct attributes* instance, double* h){
 
 	for (int i = 1; i < (instance->taps/2)+1; i++){
 		temp = sin((PI*i*cutoff)/instance->sample_freq)/((PI*i*cutoff)/instance->sample_freq);
-		sum += 2*temp;
+
 		h[instance->taps/2+(i-1)] = temp;
 		h[instance->taps/2-(i)] = temp;
-		printf("%d   %1.20f \n",i, h[instance->taps/2+(i-1)]);
 	}
-
-	printf("\n %1.10f \n\n", sum);
-
-
-	
-	for (int i = 0; i < instance->taps; i++){
-		h[i] = h[i]/sum;
-		printf("%d   %1.20f \n",i, h[i]);
-	}
-	
-
 
 	return h;
+}
+
+
+double* normalize(struct attributes* instance, double* h){
+	double sum = 0;
+
+	for (int i = 0; i < instance->taps; i++){
+		sum += 2*h[i];
+	}
+
+		
+	for (int i = 0; i < instance->taps; i++){
+		h[i] = h[i]/sum;
+	}
+	
+	return h;
+}
+
+
+void print_coeffs(struct attributes* instance, double* h){
+	printf("\n Coefficients: \n \n");
+	for (int i = 0; i < instance->taps; i++){
+		printf("%d   %1.20f \n",i, h[i]);
+	}
+	printf("\n");
 }
