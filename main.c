@@ -21,7 +21,6 @@ double* normalize(struct attributes*, double*);
 void print_coeffs(struct attributes*, double*);
 void print_attr(struct attributes*);
 void generate_impulse_file(struct attributes*, double*);
-void plot_impulse(struct attributes*, double*);
 
 
 //Calculator Functions
@@ -42,7 +41,6 @@ int main() {
 	print_coeffs(&instance, impulse_resp);
 
 	generate_impulse_file(&instance, impulse_resp);
-	plot_impulse(&instance, impulse_resp);
 	
 }
 
@@ -135,19 +133,3 @@ void generate_impulse_file(struct attributes* instance, double* h){
 	fflush(stdout);
 }
 
-void plot_impulse(struct attributes* instance, double* h){
-	FILE* gnuplot = popen("gnuplot", "w");
-	char* filename = "data/impulse.txt";
-
-	if(gnuplot == NULL){
-		printf("Error opening gnuplot");
-		exit(EXIT_FAILURE);
-	}
-
-	fprintf(gnuplot, "plot \"%s\" t 'placeholder' w lp\n", filename);
-	fflush(gnuplot);
-	fprintf(stdout, "Click Ctrl+d to quit...\n");
-	getchar();
-
-	pclose(gnuplot);
-}
