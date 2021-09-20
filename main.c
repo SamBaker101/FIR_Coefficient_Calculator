@@ -42,7 +42,7 @@ int main() {
 	print_coeffs(&instance, impulse_resp);
 
 	generate_impulse_file(&instance, impulse_resp);
-	generate_freq_file(&instance, impulse_resp, 50);
+	generate_freq_file(&instance, impulse_resp, (instance.sample_freq/2)/200);
 	
 }
 
