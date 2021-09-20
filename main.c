@@ -21,6 +21,7 @@ double* normalize(struct attributes*, double*);
 void print_coeffs(struct attributes*, double*);
 void print_attr(struct attributes*);
 void generate_impulse_file(struct attributes*, double*);
+void generate_freq_file(struct attributes*, double*, double);
 
 
 //Calculator Functions
@@ -41,6 +42,7 @@ int main() {
 	print_coeffs(&instance, impulse_resp);
 
 	generate_impulse_file(&instance, impulse_resp);
+	generate_freq_file(&instance, impulse_resp, 50);
 	
 }
 
@@ -132,4 +134,35 @@ void generate_impulse_file(struct attributes* instance, double* h){
 	printf("File Generated \n");
 	fflush(stdout);
 }
+
+void generate_freq_file(struct attributes* instance, double* h, double step){
+	FILE* file_pointer;
+	double test_freq = 0;
+	double amp;
+
+	file_pointer = fopen("data/freq.txt", "w");
+
+	if(file_pointer == NULL){
+		printf("Error generating impulse.dat");
+		exit(EXIT_FAILURE);
+	}
+
+	while (test_freq <= instance->sample_freq/2){
+		amp = 0;
+
+		for (int i = 0; i < instance->taps; i++){
+			amp += h[i]*cos(i*test_freq);
+		}
+
+	fprintf(file_pointer, "%f\t %f\n", test_freq, amp);
+	test_freq += step;
+	}
+
+
+	fclose(file_pointer);
+	printf("File Generated \n");
+	fflush(stdout);
+
+}
+
 
