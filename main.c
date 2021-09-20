@@ -68,8 +68,9 @@ double* low_pass(struct attributes* instance, double* h){
 	fflush(stdout);
 	scanf("%d", &(cutoff)); 
 
+
 	for (int i = 1; i < (instance->taps/2)+1; i++){
-		temp = sin((PI*i*cutoff)/instance->sample_freq)/((PI*i*cutoff)/instance->sample_freq);
+		temp = sin((2*PI*cutoff*i)/instance->sample_freq)/(PI*i);
 
 		h[instance->taps/2+(i-1)] = temp;
 		h[instance->taps/2-(i)] = temp;
