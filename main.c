@@ -138,31 +138,31 @@ void generate_impulse_file(struct attributes* instance, double* h){
 void generate_freq_file(struct attributes* instance, double* h, double step){
 	FILE* file_pointer;
 	double test_freq = 0;
-	double amp;
+	double x, y, amp;
 
 	file_pointer = fopen("data/freq.txt", "w");
 
 	if(file_pointer == NULL){
 		printf("Error generating impulse.dat");
 		exit(EXIT_FAILURE);
-	}
+		}
 
 	while (test_freq <= instance->sample_freq/2){
 		amp = 0;
 
 		for (int i = 0; i < instance->taps; i++){
-			amp += h[i]*cos(i*test_freq);
-		}
+			amp += h[i]*cos((2*PI*i*test_freq)/(instance->sample_freq));
+			}
 
-	fprintf(file_pointer, "%f\t %f\n", test_freq, amp);
-	test_freq += step;
-	}
+		amp = pow(amp,2);
+		fprintf(file_pointer, "%f\t %f\n", test_freq, amp);
+		test_freq += step;
+		}
+	
 
 
 	fclose(file_pointer);
 	printf("File Generated \n");
 	fflush(stdout);
-
 }
-
 
